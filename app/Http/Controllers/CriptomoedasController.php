@@ -62,7 +62,8 @@ class CriptomoedasController extends Controller
      */
     public function show(Criptomoedas $criptomoedas)
     {
-        $regCriptos = Critpomoedas::find($id);
+        #conferir a digitação
+        $regCriptos = Criptomoedas::find($id);
 
         if ($regCriptos){
             return 'Criptomoedas Localizadas:'.$regCriptos.Response()->json([],Response::HTTP_NO_CONTENT);
@@ -99,9 +100,9 @@ class CriptomoedasController extends Controller
             ], 400);
         }
 
-        $regCriptosBanco->nomeSigla = $request->nomeSigla;
-        $regCriptosBanco->nomeNome = $request->nomeNome;
-        $regCriptosBanco->nomeValor = $request->nomeValor;
+        $regCriptosBanco->Sigla = $request->Sigla;
+        $regCriptosBanco->Nome = $request->Nome;
+        $regCriptosBanco->Valor = $request->Valor;
 
         if ($regCriptosBanco->save()) {
             return response()->json([
@@ -118,7 +119,7 @@ class CriptomoedasController extends Controller
     }
     
             
-        }
+        
     
 
     /**
@@ -126,6 +127,20 @@ class CriptomoedasController extends Controller
      */
     public function destroy(Criptomoedas $criptomoedas)
     {
-        //
+        $regCriptos = Criptomoedas::find($id);
+
+        if (!$regCriptos) {
+            return response()->json([
+                'success' => false,
+                'message' => 'criptomoedas não encontrada'
+            ], 404);
+        }
+
+        if ($regCriptos->delete()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'criptomoeda delteda com sucesso'
+            ], 200);
+        }
     }
 }
